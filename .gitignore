@@ -1,0 +1,7 @@
+smart_traffic_web/model/
+smart_traffic_web/uploads/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+*.pkl

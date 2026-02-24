@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecast | Smart Traffic Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">TrafficAI</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/demo">Demo</a>
+            <a href="/forecast_page" class="active">Forecast</a>
+            <a href="/about">About</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>Predictive Forecasting</h1>
+            <p class="subtitle">AI prediction based on historical trends & sensors</p>
+        </header>
+
+        <main>
+            <div style="max-width: 700px; margin: 0 auto;">
+                <section class="card">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label for="hour">Hour of Day (0-23)</label>
+                            <input type="number" id="hour" min="0" max="23" value="12">
+                        </div>
+                        <div class="form-group">
+                            <label for="day">Day of Week</label>
+                            <select id="day">
+                                <option value="0">Monday</option>
+                                <option value="1">Tuesday</option>
+                                <option value="2">Wednesday</option>
+                                <option value="3">Thursday</option>
+                                <option value="4">Friday</option>
+                                <option value="5">Saturday</option>
+                                <option value="6">Sunday</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="month">Month (1-12)</label>
+                            <input type="number" id="month" min="1" max="12" value="2">
+                        </div>
+                        <div class="form-group">
+                            <label for="junction">Junction</label>
+                            <select id="junction">
+                                <option value="1">Junction 1</option>
+                                <option value="2">Junction 2</option>
+                                <option value="3">Junction 3</option>
+                                <option value="4">Junction 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;" onclick="getPrediction()">Execute
+                        Prediction</button>
+                </section>
+
+                <div id="resultCard" class="card"
+                    style="display: none; text-align: center; border: 2px solid var(--primary);">
+                    <h3>Forecasting Result</h3>
+                    <div style="font-size: 3.5rem; font-weight: 800; margin: 1.5rem 0;" id="predictionValue">0</div>
+                    <p id="predictionDetails" class="subtitle" style="margin-bottom: 2rem;">Estimated vehicles at
+                        junction</p>
+                    <div id="congestionStatus"
+                        style="font-weight: 800; padding: 1.25rem; border-radius: 0.75rem; display: inline-block; min-width: 250px; text-transform: uppercase;">
+                        Status: <span id="congestionValue">-</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="/" class="nav-brand">TrafficAI</a>
+                <p class="footer-desc">AI-powered traffic intelligence for smarter cities. Predict, analyze, and
+                    optimize urban mobility with planetary-scale data.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon">𝕏</a>
+                    <a href="#" class="social-icon">in</a>
+                    <a href="#" class="social-icon">gh</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/forecast_page">Forecast</a></li>
+                    <li><a href="/about">About Product</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <ul class="footer-links">
+                    <li><a href="/demo">Live Demo</a></li>
+                    <li><a href="/#features">Core Features</a></li>
+                    <li><a href="/#upload-section">Model Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:support@trafficai.city">support@trafficai.city</a></li>
+                    <li><a href="#">+1 (555) TRAFFIC</a></li>
+                    <li><a href="#">Global HQ, Smart City Hub</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-text">© 2026 Smart Traffic Analytics & Forecasting System | Engineered for Urban Excellence
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        async function getPrediction() {
+            const hour = document.getElementById('hour').value;
+            const day = document.getElementById('day').value;
+            const month = document.getElementById('month').value;
+            const junction = document.getElementById('junction').value;
+
+            try {
+                const response = await fetch('/forecast', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ hour, day, month, junction })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                document.getElementById('predictionValue').innerText = data.predicted_volume;
+                document.getElementById('predictionDetails').innerText = `Sensor estimation for Junction ${junction} at ${hour}:00`;
+
+                const congestionEl = document.getElementById('congestionValue');
+                const statusEl = document.getElementById('congestionStatus');
+                congestionEl.innerText = data.congestion;
+
+                if (data.congestion === 'LOW') {
+                    statusEl.style.backgroundColor = 'rgba(16, 185, 129, 0.2)';
+                    statusEl.style.color = '#10b981';
+                    statusEl.style.border = '1px solid #10b981';
+                } else if (data.congestion === 'MEDIUM') {
+                    statusEl.style.backgroundColor = 'rgba(245, 158, 11, 0.2)';
+                    statusEl.style.color = '#f59e0b';
+                    statusEl.style.border = '1px solid #f59e0b';
+                } else if (data.congestion === 'HIGH') {
+                    statusEl.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+                    statusEl.style.color = '#ef4444';
+                    statusEl.style.border = '1px solid #ef4444';
+                }
+
+                document.getElementById('resultCard').style.display = 'block';
+                document.getElementById('resultCard').style.animation = 'fadeIn 0.5s ease-out';
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Please ensure data is uploaded first.");
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Smart Traffic Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple-glow: #a855f7;
+            --blue-purple: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
+        }
+
+        .about-section {
+            margin-bottom: 5rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .infographic-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .content-block {
+            background: var(--glass);
+            padding: 2.5rem;
+            border-radius: 2rem;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--blue-purple);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: var(--blue-purple);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.4);
+        }
+
+        .tech-tag {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(168, 85, 247, 0.1);
+            color: #d8b4fe;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .future-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dot {
+            min-width: 12px;
+            height: 12px;
+            background: var(--purple-glow);
+            border-radius: 50%;
+            margin-top: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .infographic-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">TrafficAI</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/demo">Demo</a>
+            <a href="/forecast_page">Forecast</a>
+            <a href="/about" class="active">About</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <span class="hero-badge" style="border-color: var(--purple-glow); color: var(--purple-glow);">Product
+                Deep-Dive</span>
+            <h1>Intelligence Behind the System</h1>
+            <p class="subtitle">Revolutionizing urban mobility through data-driven architectural scaling</p>
+        </header>
+
+        <!-- Problem & Solution -->
+        <div class="about-section infographic-container">
+            <div class="content-block">
+                <div class="icon-box">🚨</div>
+                <h3>The Problem Statement</h3>
+                <p style="color: var(--text-muted);">Modern urban environments face unprecedented congestion challenges.
+                    Inefficient traffic management leads to billions in lost productivity, increased carbon emissions,
+                    and safety hazards at over-saturated junctions. Legacy systems lack the predictive power to adapt to
+                    real-time temporal fluctuations.</p>
+            </div>
+            <div class="content-block" style="border-color: var(--purple-glow);">
+                <div class="icon-box">💡</div>
+                <h3>Our AI-Powered Solution</h3>
+                <p style="color: var(--text-muted);">TrafficAI leverages a high-performance **Random Forest Regressor**
+                    to analyze complex time-series data. By processing historical patterns alongside dynamic lag
+                    features—such as previous-hour and same-time-yesterday volumes—our engine delivers pinpoint accurate
+                    forecasts, enabling proactive congestion mitigation.</p>
+            </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="about-section content-block" style="padding: 3rem;">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 2rem;">
+                <div class="icon-box" style="margin-bottom: 0;">🛠️</div>
+                <h3 style="margin-bottom: 0;">Technology Stack</h3>
+            </div>
+            <div style="display: flex; flex-wrap: wrap;">
+                <span class="tech-tag">Python 3.10</span>
+                <span class="tech-tag">Flask Micro-framework</span>
+                <span class="tech-tag">Scikit-Learn (ML Engine)</span>
+                <span class="tech-tag">Pandas (Data Orchestration)</span>
+                <span class="tech-tag">NumPy</span>
+                <span class="tech-tag">Chart.js (High-Fidelity Viz)</span>
+                <span class="tech-tag">Glassmorphism UI</span>
+                <span class="tech-tag">Vanilla CSS (Modern Layouts)</span>
+            </div>
+            <p style="color: var(--text-muted); margin-top: 1.5rem; font-size: 0.9rem;">The system is engineered for
+                scalability and lightweight deployment, ensuring maximum throughput on standard cloud instances.</p>
+        </div>
+
+        <!-- Future Scope -->
+        <div class="about-section">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2>Future Horizons</h2>
+                <p class="subtitle">Expanding the boundaries of Smart City integration</p>
+            </div>
+            <div class="infographic-container">
+                <div class="future-item">
+                    <div class="dot"></div>
+                    <div>
+                        <h4 style="margin-bottom: 0.25rem;">Adaptive Signal Control</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Integration with city-wide smart traffic
+                            signals to adjust timings based on predicted volume surges.</p>
+                    </div>
+                </div>
+                <div class="future-item">
+                    <div class="dot"></div>
+                    <div>
+                        <h4 style="margin-bottom: 0.25rem;">IoT Sensor Mesh</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Direct API hooks for real-time edge
+                            computing sensors and connected vehicle networks.</p>
+                    </div>
+                </div>
+                <div class="future-item">
+                    <div class="dot"></div>
+                    <div>
+                        <h4 style="margin-bottom: 0.25rem;">Multi-Modal Routing</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Extending predictions to public transit,
+                            cycling lanes, and emergency response routes.</p>
+                    </div>
+                </div>
+                <div class="future-item">
+                    <div class="dot"></div>
+                    <div>
+                        <h4 style="margin-bottom: 0.25rem;">Carbon Footprint Tracking</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Environmental impact dashboards mapping
+                            congestion directly to local air quality metrics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="/" class="nav-brand">TrafficAI</a>
+                <p class="footer-desc">AI-powered traffic intelligence for smarter cities. Predict, analyze, and
+                    optimize urban mobility with planetary-scale data.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon">𝕏</a>
+                    <a href="#" class="social-icon">in</a>
+                    <a href="#" class="social-icon">gh</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/forecast_page">Forecast</a></li>
+                    <li><a href="/about">About Product</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <ul class="footer-links">
+                    <li><a href="/demo">Live Demo</a></li>
+                    <li><a href="/#features">Core Features</a></li>
+                    <li><a href="/#upload-section">Model Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:support@trafficai.city">support@trafficai.city</a></li>
+                    <li><a href="#">+1 (555) TRAFFIC</a></li>
+                    <li><a href="#">Global HQ, Smart City Hub</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-text">© 2026 Smart Traffic Analytics & Forecasting System | Engineered for Urban Excellence
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>

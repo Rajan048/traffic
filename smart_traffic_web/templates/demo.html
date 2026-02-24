@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Demo | Smart Traffic Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-glow: rgba(0, 242, 255, 0.3);
+        }
+
+        .demo-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .main-charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .chart-card-full {
+            grid-column: span 2;
+        }
+
+        .accuracy-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .neon-border {
+            border: 1px solid var(--neon-blue) !important;
+            box-shadow: 0 0 15px var(--neon-glow);
+        }
+
+        .accuracy-value {
+            color: var(--neon-blue);
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        @media (max-width: 1100px) {
+            .demo-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .accuracy-sidebar {
+                order: -1;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .accuracy-sidebar .card {
+                flex: 1;
+                min-width: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-charts {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-card-full {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">TrafficAI</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/demo" class="active">Demo</a>
+            <a href="/forecast_page">Forecast</a>
+            <a href="/about">About</a>
+        </div>
+    </nav>
+
+    <div class="container dash-fade-in">
+        <header class="page-header">
+            <span class="hero-badge" style="border-color: var(--neon-blue); color: var(--neon-blue);">Interface
+                Mockup</span>
+            <h1>See It In Action</h1>
+            <p class="subtitle">Real-time simulation of urban mobility intelligence</p>
+        </header>
+
+        <!-- KPI Row -->
+        <div class="kpi-grid">
+            <div class="kpi-card neon-border">
+                <div class="kpi-label">Total Traffic Volume</div>
+                <div class="kpi-value" id="totalVolume">0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Average Hourly Traffic</div>
+                <div class="kpi-value" id="avgHourly">0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Peak Traffic Hour</div>
+                <div class="kpi-value" id="peakHour">0</div>
+            </div>
+        </div>
+
+        <div class="demo-layout">
+            <div class="main-charts">
+                <!-- Line Chart -->
+                <div class="card chart-card-full">
+                    <h3 style="color: var(--neon-blue);">Hourly Traffic Trend</h3>
+                    <p class="subtitle">System-wide vehicle distribution over 24 hours</p>
+                    <div class="chart-container">
+                        <canvas id="hourlyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Bar Chart -->
+                <div class="card">
+                    <h3>Junction Comparison</h3>
+                    <p class="subtitle">Multi-point sensor analysis</p>
+                    <div class="chart-container">
+                        <canvas id="junctionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Pie Chart -->
+                <div class="card">
+                    <h3>Congestion Distribution</h3>
+                    <p class="subtitle">Volume-based traffic classification</p>
+                    <div class="chart-container">
+                        <canvas id="congestionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accuracy Side Panel -->
+            <aside class="accuracy-sidebar">
+                <div class="card neon-border">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">
+                        Model Accuracy</h3>
+                    <div style="margin-bottom: 2rem;">
+                        <div class="kpi-label">System RMSE</div>
+                        <div class="accuracy-value" id="rmseScore">0.00</div>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">Root Mean Square
+                            Error</p>
+                    </div>
+                    <div>
+                        <div class="kpi-label">R² Score</div>
+                        <div class="accuracy-value" id="r2Score">0.0000</div>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">Variance
+                            Explanation Factor</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Neural Status</h3>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 1rem;">
+                        <div
+                            style="width: 12px; height: 12px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue);">
+                        </div>
+                        <span style="font-size: 0.9rem; font-weight: 600;">Engine Active</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">The Random Forest
+                        Regressor is currently processing real-time lag data across 4 monitored junctions.</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="/" class="nav-brand">TrafficAI</a>
+                <p class="footer-desc">AI-powered traffic intelligence for smarter cities. Predict, analyze, and
+                    optimize urban mobility with planetary-scale data.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon">𝕏</a>
+                    <a href="#" class="social-icon">in</a>
+                    <a href="#" class="social-icon">gh</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/forecast_page">Forecast</a></li>
+                    <li><a href="/about">About Product</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <ul class="footer-links">
+                    <li><a href="/demo">Live Demo</a></li>
+                    <li><a href="/#features">Core Features</a></li>
+                    <li><a href="/#upload-section">Model Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:support@trafficai.city">support@trafficai.city</a></li>
+                    <li><a href="#">+1 (555) TRAFFIC</a></li>
+                    <li><a href="#">Global HQ, Smart City Hub</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-text">© 2026 Smart Traffic Analytics & Forecasting System | Engineered for Urban Excellence
+            </p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+    <script>
+        // Demo specific chart initialization override if needed
+        document.addEventListener('DOMContentLoaded', () => {
+            // Re-use fetchAnalytics from charts.js which will populate our IDs
+        });
+    </script>
+</body>
+
+</html>

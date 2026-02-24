@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Traffic Analytics & Forecasting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">TrafficAI</a>
+        <div class="nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/demo">Demo</a>
+            <a href="/forecast_page">Forecast</a>
+            <a href="/about">About</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero dash-fade-in">
+        <div class="hero-content">
+            <span class="hero-badge"
+                style="border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #a5b4fc; padding: 0.6rem 1.5rem;">Smart
+                City ML Solutions</span>
+            <h1 style="font-size: 5rem; font-weight: 800; margin-top: 1.5rem; letter-spacing: -2px;">Smart
+                Traffic<br>Analytics &<br>Forecasting</h1>
+            <p
+                style="font-size: 1.5rem; font-weight: 400; color: #f8fafc; margin-top: -0.5rem; margin-bottom: 3rem; opacity: 0.9;">
+                Predict and Analyze Traffic with Machine Learning</p>
+            <div class="hero-actions">
+                <button class="btn" style="padding: 1rem 2.5rem; background: #6366f1; font-size: 1.1rem;"
+                    onclick="document.getElementById('upload-section').scrollIntoView({behavior: 'smooth'})">Upload CSV
+                    File</button>
+                <button class="btn btn-secondary"
+                    style="padding: 1rem 2.5rem; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); font-size: 1.1rem;"
+                    onclick="window.location.href='/demo'">View Demo</button>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="laptop-mockup"
+                style="border-width: 12px; border-color: #1e293b; background: #0f172a; box-shadow: 0 40px 100px rgba(0,0,0,0.8);">
+                <div class="laptop-screen" style="padding: 1.5rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <div style="display: flex; gap: 4px;">
+                            <div style="width: 8px; height: 8px; background: #f87171; border-radius: 50%;"></div>
+                            <div style="width: 8px; height: 8px; background: #fbbf24; border-radius: 50%;"></div>
+                            <div style="width: 8px; height: 8px; background: #34d399; border-radius: 50%;"></div>
+                        </div>
+                        <div style="font-size: 0.6rem; color: #94a3b8; letter-spacing: 1px;">TRAFFICAI.CITY/DASHBOARD
+                        </div>
+                    </div>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 1.5rem;">
+                        <div
+                            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                            <div
+                                style="font-size: 0.55rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">
+                                Total Volume</div>
+                            <div style="font-size: 1.2rem; font-weight: 800; color: #fff;">204</div>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                            <div
+                                style="font-size: 0.55rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">
+                                Avg Hourly</div>
+                            <div style="font-size: 1.2rem; font-weight: 800; color: #fff;">10.25</div>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                            <div
+                                style="font-size: 0.55rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">
+                                Peak Hour</div>
+                            <div style="font-size: 1.2rem; font-weight: 800; color: #fff;">18:00</div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="flex: 1; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.1); border-radius: 8px; padding: 10px; display: flex; flex-direction: column;">
+                        <div style="font-size: 0.6rem; color: #a5b4fc; font-weight: 700; margin-bottom: 5px;">TRAFFIC
+                            VOLUME TREND</div>
+                        <div style="flex: 1; position: relative;">
+                            <svg viewBox="0 0 200 60" style="width: 100%; height: 100%;">
+                                <path d="M0 50 Q 20 45, 40 48 T 80 40 T 120 45 T 160 30 T 200 35" fill="none"
+                                    stroke="#6366f1" stroke-width="2" />
+                                <path d="M0 50 Q 20 45, 40 48 T 80 40 T 120 45 T 160 30 T 200 35 L 200 60 L 0 60 Z"
+                                    fill="rgba(99, 102, 241, 0.1)" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="section-title dash-fade-in">
+                <h2>Powerful Features Built for Smart Cities</h2>
+                <p class="subtitle">Next-generation tools to solve tomorrow's urban challenges</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card dash-fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3>Upload Traffic Data</h3>
+                    <p>Effortlessly import city-wide sensor data via CSV. Our engine handles normalization
+                        automatically.</p>
+                </div>
+                <div class="feature-card dash-fade-in">
+                    <div class="feature-icon">📈</div>
+                    <h3>Interactive Analytics Dashboard</h3>
+                    <p>Visualize peak hours, junction bottle-necks, and historical trends with high-fidelity charts.</p>
+                </div>
+                <div class="feature-card dash-fade-in">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Based Traffic Forecasting</h3>
+                    <p>State-of-the-art Random Forest models predict vehicle volume with verified RMSE accuracy.</p>
+                </div>
+                <div class="feature-card dash-fade-in">
+                    <div class="feature-icon">🚦</div>
+                    <h3>Congestion Detection</h3>
+                    <p>Real-time classification labels (LOW, MEDIUM, HIGH) with dynamic color-coded indicators.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section dash-fade-in">
+            <div class="section-title">
+                <h2>Trusted by Urban Mobility Experts</h2>
+                <p class="subtitle">Join thousands of planners making smarter city decisions</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"The forecasting accuracy of TrafficAI has fundamentally changed how we
+                        allocate road maintenance resources."</p>
+                    <div class="testimonial-profile">
+                        <div class="profile-img">JD</div>
+                        <div class="profile-info">
+                            <h4>James Dalton</h4>
+                            <p>Lead City Planner</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Integrating machine learning into our daily analytics used to be
+                        daunting. Now, it's just one upload away."</p>
+                    <div class="testimonial-profile">
+                        <div class="profile-img">SC</div>
+                        <div class="profile-info">
+                            <h4>Sarah Chen</h4>
+                            <p>Urban Data Analyst</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Real-time congestion classification allows our team to respond to
+                        bottlenecks before they even happen."</p>
+                    <div class="testimonial-profile">
+                        <div class="profile-img">MR</div>
+                        <div class="profile-info">
+                            <h4>Marcus Riva</h4>
+                            <p>Transport Engineer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upload Section -->
+        <main id="upload-section" class="dash-fade-in" style="margin-top: 4rem; margin-bottom: 4rem;">
+            <section class="card">
+                <h2 style="margin-bottom: 1rem;">System Core: Model Training</h2>
+                <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Upload your dataset to bridge the gap
+                    between historical data and future predictions.</p>
+
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <div style="border: 2px dashed var(--glass-border); border-radius: 1rem; padding: 4rem; text-align: center; cursor: pointer;"
+                        onclick="document.getElementById('fileInput').click()">
+                        <p id="fileNameDisplay" style="color: var(--text-muted);">Drag and drop your CSV file here or
+                            click to browse</p>
+                        <input type="file" id="fileInput" name="file" accept=".csv" style="display: none;"
+                            onchange="updateFileName()">
+                    </div>
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <button type="submit" class="btn">Initialize Engine</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="/" class="nav-brand">TrafficAI</a>
+                <p class="footer-desc">AI-powered traffic intelligence for smarter cities. Predict, analyze, and
+                    optimize urban mobility with planetary-scale data.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon">𝕏</a>
+                    <a href="#" class="social-icon">in</a>
+                    <a href="#" class="social-icon">gh</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/forecast_page">Forecast</a></li>
+                    <li><a href="/about">About Product</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <ul class="footer-links">
+                    <li><a href="/demo">Live Demo</a></li>
+                    <li><a href="/#features">Core Features</a></li>
+                    <li><a href="/#upload-section">Model Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:support@trafficai.city">support@trafficai.city</a></li>
+                    <li><a href="#">+91 PRATHMESH SANJ</a></li>
+                    <li><a href="#">Global HQ, KP II</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-text">© 2026 Smart Traffic Analytics & Forecasting System | Engineered for Urban Excellence
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function updateFileName() {
+            const input = document.getElementById('fileInput');
+            const display = document.getElementById('fileNameDisplay');
+            if (input.files.length > 0) {
+                display.innerText = "Target: " + input.files[0].name;
+                display.style.color = "var(--accent)";
+            }
+        }
+    </script>
+</body>
+
+</html>

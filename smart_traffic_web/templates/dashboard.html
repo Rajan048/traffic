@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Smart Traffic Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">TrafficAI</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/dashboard" class="active">Dashboard</a>
+            <a href="/demo">Demo</a>
+            <a href="/forecast_page">Forecast</a>
+            <a href="/about">About</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>Analytics Insights</h1>
+            <p class="subtitle">Comprehensive analysis of historical traffic patterns</p>
+        </header>
+
+        <main>
+            <!-- KPI Section -->
+            <div class="kpi-grid">
+                <div class="kpi-card" style="border-left: 4px solid var(--primary);">
+                    <div class="kpi-label">Total Volume</div>
+                    <div class="kpi-value" id="totalVolume">-</div>
+                </div>
+                <div class="kpi-card" style="border-left: 4px solid var(--accent);">
+                    <div class="kpi-label">Avg Hourly</div>
+                    <div class="kpi-value" id="avgHourly">-</div>
+                </div>
+                <div class="kpi-card" style="border-left: 4px solid var(--warning);">
+                    <div class="kpi-label">Peak Hour</div>
+                    <div class="kpi-value" id="peakHour">-</div>
+                </div>
+                <!-- Model Performance -->
+                <div class="kpi-card" style="border-left: 4px solid #8b5cf6;">
+                    <div class="kpi-label">Model RMSE</div>
+                    <div class="kpi-value" id="rmseScore"
+                        style="font-size: 1.5rem; margin-top: 0.5rem; color: #a78bfa;">-</div>
+                </div>
+                <div class="kpi-card" style="border-left: 4px solid #ec4899;">
+                    <div class="kpi-label">R² Score</div>
+                    <div class="kpi-value" id="r2Score" style="font-size: 1.5rem; margin-top: 0.5rem; color: #f472b6;">-
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 2rem;">
+                <div class="card">
+                    <h3>Hourly Traffic Trend</h3>
+                    <p class="subtitle">Temporal distribution across 24 hours</p>
+                    <div class="chart-container">
+                        <canvas id="hourlyChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Junction-wise Distribution</h3>
+                    <p class="subtitle">Comparative vehicle volume analysis</p>
+                    <div class="chart-container">
+                        <canvas id="junctionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="/" class="nav-brand">TrafficAI</a>
+                <p class="footer-desc">AI-powered traffic intelligence for smarter cities. Predict, analyze, and
+                    optimize urban mobility with planetary-scale data.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon">𝕏</a>
+                    <a href="#" class="social-icon">in</a>
+                    <a href="#" class="social-icon">gh</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/forecast_page">Forecast</a></li>
+                    <li><a href="/about">About Product</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Solutions</h4>
+                <ul class="footer-links">
+                    <li><a href="/demo">Live Demo</a></li>
+                    <li><a href="/#features">Core Features</a></li>
+                    <li><a href="/#upload-section">Model Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:support@trafficai.city">support@trafficai.city</a></li>
+                    <li><a href="#">+1 (555) TRAFFIC</a></li>
+                    <li><a href="#">Global HQ, Smart City Hub</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-text">© 2026 Smart Traffic Analytics & Forecasting System | Engineered for Urban Excellence
+            </p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+</body>
+
+</html>

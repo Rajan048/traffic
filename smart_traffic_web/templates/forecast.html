@@ -4,20 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forecast | Smart Traffic Analytics</title>
+    <title>Forecast | CivicPulse</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <!-- Clerk SDK -->
+    <script async crossorigin="anonymous"
+        data-clerk-publishable-key="pk_test_ZGlzY3JldGUtcm9iaW4tNjYuY2xlcmsuYWNjb3VudHMuZGV2JA"
+        src="https://discreet-robin-66.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+        type="text/javascript"></script>
+
+    <script>
+        window.addEventListener('load', async function () {
+            await Clerk.load();
+
+            if (Clerk.user) {
+                const signInLink = document.getElementById('sign-in-link');
+                if (signInLink) signInLink.style.display = 'none';
+
+                const userButtonDiv = document.getElementById('user-button');
+                if (userButtonDiv) Clerk.mountUserButton(userButtonDiv, {
+                    afterSignOutUrl: window.location.origin + '/'
+                });
+            } else {
+                const userButtonDiv = document.getElementById('user-button');
+                if (userButtonDiv) userButtonDiv.style.display = 'none';
+
+                const signInLink = document.getElementById('sign-in-link');
+                if (signInLink) {
+                    signInLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        Clerk.openSignIn();
+                    });
+                }
+            }
+        });
+    </script>
 </head>
 
 <body>
     <nav class="navbar">
-        <a href="/" class="nav-brand">TrafficAI</a>
+        <a href="/" class="nav-brand">CivicPulse</a>
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/dashboard">Dashboard</a>
             <a href="/demo">Demo</a>
             <a href="/forecast_page" class="active">Forecast</a>
             <a href="/about">About</a>
+            <div id="user-button"></div>
+            <a href="#" id="sign-in-link" style="display: inline-block;">Login/Sign Up</a>
         </div>
     </nav>
 
@@ -83,7 +119,7 @@
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <a href="/" class="nav-brand">TrafficAI</a>
+                <a href="/" class="nav-brand">CivicPulse</a>
                 <p class="footer-desc">AI-powered traffic intelligence for smarter cities. Predict, analyze, and
                     optimize urban mobility with planetary-scale data.</p>
                 <div class="footer-social">

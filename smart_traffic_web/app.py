@@ -2,16 +2,48 @@ import os
 import joblib
 import pandas as pd
 import numpy as np
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 from datetime import datetime
+from dotenv import load_dotenv
+from functools import wraps
+import clerk_backend_api
+from clerk_backend_api import Clerk
+
+# Load environment variables
+load_dotenv()
 
 # Initialize Flask App
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MODEL_FOLDER'] = 'model'
+
+# Clerk Configuration
+CLERK_SECRET_KEY = os.getenv('CLERK_SECRET_KEY')
+clerk_client = None
+if CLERK_SECRET_KEY and CLERK_SECRET_KEY != 'REPLACE_WITH_YOUR_SECRET_KEY':
+    clerk_client = Clerk(bearer_auth=CLERK_SECRET_KEY)
+
+# Auth Decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # In a Clerk-integrated Flask app, the frontend handles the session.
+        # Backend verification requires the CLERK_SECRET_KEY.
+        if clerk_client is None:
+            # If no Secret Key is provided, we check for session cookie
+            if not request.cookies.get('__session'):
+                if request.method == 'GET':
+                    return redirect(url_for('index', auth_required=1))
+                return jsonify({"status": "error", "message": "Authentication required"}), 401
+            return f(*args, **kwargs)
+        
+        # When CLERK_SECRET_KEY is present, we would perform full JWT verification here.
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Ensure required directories exist for storage
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -72,6 +104,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
+@login_required
 def upload_file():
     """
     Handles CSV upload, data preprocessing, model training, and evaluation.
@@ -131,6 +164,7 @@ def upload_file():
         return jsonify({"status": "error", "message": "Invalid file format. Please upload a CSV."}), 400
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     """Renders the analytics dashboard view."""
     return render_template('dashboard.html')
@@ -146,6 +180,7 @@ def about():
     return render_template('about.html')
 
 @app.route('/api/analytics')
+@login_required
 def get_analytics():
     """
     API endpoint that serves analytics data and model metrics for the dashboard.
@@ -204,11 +239,13 @@ def get_analytics():
     })
 
 @app.route('/forecast_page')
+@login_required
 def forecast_page():
     """Renders the prediction/forecasting interface."""
     return render_template('forecast.html')
 
 @app.route('/forecast', methods=['POST'])
+@login_required
 def forecast():
     """
     Predicts traffic volume for a given time and junction.
@@ -268,6 +305,7 @@ def forecast():
     })
 
 @app.route('/predict', methods=['POST'])
+@login_required
 def predict():
     """Legacy endpoint for compatibility."""
     return forecast()

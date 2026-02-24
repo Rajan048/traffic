@@ -1,7 +1,26 @@
-smart_traffic_web/model/
-smart_traffic_web/uploads/
+# Python
 __pycache__/
-*.pyc
-.ipynb_checkpoints/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Flask
+instance/
+.webassets-cache
+
+# Data/Models
+smart_traffic_web/uploads/
+smart_traffic_web/model/*.pkl
+
+# JS/Node (for clerk-javascript)
+node_modules/
+dist/
 .DS_Store
-*.pkl
+
+# IDEs
+.vscode/
+.idea/

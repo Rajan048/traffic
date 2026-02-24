@@ -4,20 +4,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Traffic Analytics & Forecasting</title>
+    <title>CivicPulse | Smart Traffic Analytics & Forecasting</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <!-- Clerk SDK -->
+    <script async crossorigin="anonymous"
+        data-clerk-publishable-key="pk_test_ZGlzY3JldGUtcm9iaW4tNjYuY2xlcmsuYWNjb3VudHMuZGV2JA"
+        src="https://discreet-robin-66.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+        type="text/javascript"></script>
+
+    <script>
+        window.addEventListener('load', async function () {
+            await Clerk.load();
+
+            if (Clerk.user) {
+                const signInLink = document.getElementById('sign-in-link');
+                if (signInLink) signInLink.style.display = 'none';
+
+                const userButtonDiv = document.getElementById('user-button');
+                if (userButtonDiv) Clerk.mountUserButton(userButtonDiv, {
+                    afterSignOutUrl: window.location.origin + '/'
+                });
+
+                // Show upload content, hide locked state
+                const uploadContent = document.getElementById('upload-card-content');
+                const uploadLocked = document.getElementById('upload-card-locked');
+                if (uploadContent) uploadContent.style.display = 'block';
+                if (uploadLocked) uploadLocked.style.display = 'none';
+            } else {
+                // Check for auth_required flag in URL
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('auth_required')) {
+                    alert('Security Notice: You must be signed in to access that protected resource.');
+                }
+
+                const userButtonDiv = document.getElementById('user-button');
+                if (userButtonDiv) userButtonDiv.style.display = 'none';
+
+                // Hide upload content, show locked state
+                const uploadContent = document.getElementById('upload-card-content');
+                const uploadLocked = document.getElementById('upload-card-locked');
+                if (uploadContent) uploadContent.style.display = 'none';
+                if (uploadLocked) uploadLocked.style.display = 'block';
+
+                const signInLink = document.getElementById('sign-in-link');
+                if (signInLink) {
+                    signInLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        Clerk.openSignIn();
+                    });
+                }
+            }
+        });
+    </script>
 </head>
 
 <body>
     <nav class="navbar">
-        <a href="/" class="nav-brand">TrafficAI</a>
+        <a href="/" class="nav-brand">CivicPulse</a>
         <div class="nav-links">
             <a href="/" class="active">Home</a>
             <a href="/dashboard">Dashboard</a>
             <a href="/demo">Demo</a>
             <a href="/forecast_page">Forecast</a>
             <a href="/about">About</a>
+            <div id="user-button"></div>
+            <a href="#" id="sign-in-link" style="display: inline-block;">Login/Sign Up</a>
         </div>
     </nav>
 
@@ -139,7 +193,8 @@
             </div>
             <div class="testimonial-grid">
                 <div class="testimonial-card">
-                    <p class="testimonial-quote">"The forecasting accuracy of TrafficAI has fundamentally changed how we
+                    <p class="testimonial-quote">"The forecasting accuracy of CivicPulse has fundamentally changed how
+                        we
                         allocate road maintenance resources."</p>
                     <div class="testimonial-profile">
                         <div class="profile-img">JD</div>
@@ -176,7 +231,7 @@
 
         <!-- Upload Section -->
         <main id="upload-section" class="dash-fade-in" style="margin-top: 4rem; margin-bottom: 4rem;">
-            <section class="card">
+            <section class="card" id="upload-card-content" style="display: none;">
                 <h2 style="margin-bottom: 1rem;">System Core: Model Training</h2>
                 <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Upload your dataset to bridge the gap
                     between historical data and future predictions.</p>
@@ -194,13 +249,25 @@
                     </div>
                 </form>
             </section>
+
+            <!-- Locked State -->
+            <section class="card" id="upload-card-locked" style="text-align: center; padding: 5rem 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1.5rem;">🔒</div>
+                <h2 style="margin-bottom: 1rem;">Authentication Required</h2>
+                <p
+                    style="color: var(--text-muted); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                    Model training and data upload features are restricted to authorized personnel. Please sign in to
+                    access the CivicPulse core engine.
+                </p>
+                <button class="btn" onclick="Clerk.openSignIn()">Sign In to Upload</button>
+            </section>
         </main>
     </div>
 
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <a href="/" class="nav-brand">TrafficAI</a>
+                <a href="/" class="nav-brand">CivicPulse</a>
                 <p class="footer-desc">AI-powered traffic intelligence for smarter cities. Predict, analyze, and
                     optimize urban mobility with planetary-scale data.</p>
                 <div class="footer-social">
